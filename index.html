@@ -65,7 +65,7 @@ function randSliceReplaceNext(origin, final, k) {
     rnd = Math.random() * final.length;
 
     if (rndList.includes(rnd)) {
-        return randSliceReplace(origin, final, k);
+        return randSliceReplaceNext(origin, final, k);
     } else {
         rndList.concat(rnd);
         k++;
