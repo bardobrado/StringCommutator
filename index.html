@@ -2,6 +2,8 @@
 <p id="demo">Funciona melhor com textos menores.</p>
 <button onclick="nextText();">next</button>
 <script>
+import { onMount } from "svelte";
+
 let origin = "Funciona melhor com textos menores.";
 let final = "Mas ainda assim é um efeito legal";
 let part;
@@ -12,111 +14,176 @@ let speed = 5;
 let element = "demo";
 let running = false;
 
-
 part = document.getElementById(element).innerHTML;
 
 
-function nextText() {
-	if (final.length >= origin.length) {
-		if (k < final.length && part != final) {
-			running = true;
-			document.getElementById(element).innerHTML =
-				randSliceReplaceNext(part, final, k);
+function setK( k) {
+	k = k;
+}
 
-			setTimeout(nextText, speed);
+function getK() {
+	return k;
+}
+
+function isRunning() {
+    return running;
+}
+function setRunning( bol)
+{
+    running = bol;
+}
+
+function genRnd( mod ) {
+    return Math.random() * mod;
+}
+
+function getRnd() {
+    return rnd;
+}
+
+function setRnd( rd ) {
+    rnd = rd;
+} 
+
+function getSpeed() {
+    return speed;
+}
+function setSpeed(spd) {
+    speed = spd;
+}
+
+function getFinal() {
+    return final;
+}
+
+function setFinal (fin) {
+    final = fin;
+}
+
+function getOrigin() {
+    return origin;
+}
+
+function setOrigin(ori) {
+    origin = ori;
+}
+
+function getDocElement() {
+    return element;
+}
+
+function setDocElement(elem) {
+    element = elem;
+}
+
+function getDocElemInner(){
+    return part;
+}
+
+function setDocElemInner(docElem) {
+    part = docElem
+}
+
+function nextText() {
+	if (getFinal().length >= getOrigin().length) {
+		if (getDocElemInner() != GetFinal()) {
+			setRunning(true);
+			document.getElementById(getDocElem()).innerHTML =
+				randSliceReplaceNext(getDocElemInner(), getFinal());
+
+			setTimeout(nextText, getSpeed());
 		} else {
 			rndList = [];
-			k = 0;
-			part = final;
-			running = false;
+			setK(0);
+			setDocElemInner(getFinal());
+			setRunning(false);
 		}
 	} else {
-		if (k < final.length && part.slice(0, final.length) != final) {
-			running = true;
-			document.getElementById(element).innerHTML =
-				randSliceReplaceNext(part, final, k);
-			setTimeout(nextText, speed);
+		if (getDocElemInner().slice(0, getFinal().length) != getFinal()) {
+			setRunning(true);
+			document.getElementById(getDocElement()).innerHTML =
+				randSliceReplaceNext(getDocElemInner(), getFinal());
+			setTimeout(nextText, getSpeed());
 		} else {
-			k = 0;
-			nextTextDesc();
 			rndList = [];
-			part = final;
-			running = false;
+			setK(0);
+			nextTextDesc();
+			setDocElemInner(getFinal());
+			setRunning(false);
 		}
 	}
 }
 
 function nextTextDesc() {
-	document.getElementById(element).innerHTML = removeExcedent(
-		origin,
-		final,
-		k
+	document.getElementById(getDocElement()).innerHTML = removeExcedent(
+		getOrigin(),
+		getFinal(),
+		getK()	
 	);
-	setTimeout(nextTextDesc, speed);
+	setTimeout(nextTextDesc, getSpeed());
 }
 
 function removeExcedent(origin, final, kj) {
-	if (k < origin.length - final.length) {
-		part =
-			part.slice(0, final.length) +
-			part.slice(final.length, origin.length - k);
+	if (getK() < origin.length - final.length) {
+		setDocElemInner(getDocElemInner().slice(0, final.length) + getDocElemInner().slice(final.length, origin.length - getK()));
 		kj++;
-		k = kj;
-		console.log("oi");
+		setK(kj);
+
 	}
-	return part;
+	return getDocElemInner();
 }
 
 function randSliceReplaceNext(origin, final, k) {
-	rnd = Math.random() * final.length;
+	setRnd(genRnd(final.length));
 
-	if (rndList.includes(rnd)) {
-		return randSliceReplaceNext(origin, final, k);
+	if (rndList.includes(getRnd())) {
+		return randSliceReplaceNext(origin, final);
 	} else {
-		rndList.concat(rnd);
-		k++;
+		rndList.concat(getRnd());
+		setK(getK()+1);
 	}
-	part = origin.slice(0, rnd);
-	part += final.charAt(rnd) + origin.slice(rnd + 1);
-	return part;
+	setDocElemInner(origin.slice(0, getRnd()));
+	setDocElemInner(getDocElemInner()+final.charAt(getRnd()) + origin.slice(getRnd() + 1));
+	
+	return getDocElemInner();
 }
 
 function backText() {
-	if (origin.length >= final.length) {
-		if (k < origin.length && part != origin) {
-			running = true;
-			document.getElementById(element).innerHTML =
-				randSliceReplaceNext(part, origin, k);
-
-			setTimeout(backText, speed);
+	if (getOrigin().length >= getFinal().length) {
+		if ( getK() < getOrigin().length && getDocElemInner() != getOrigin()) {
+			setRunning(true);
+			document.getElementById(getDocElement()).innerHTML =
+				randSliceReplaceNext(getDocElemInner(), getOrigin(), getK());
+			
+			setTimeout(backText, getSpeed());
 		} else {
 			rndList = [];
-			k = 0;
-			part = origin;
-			running = false;
+			setK(0);
+			setDocElemInner(getOrigin());
+			setRunning(false);
 		}
 	} else {
-		if (k < origin.length && part.slice(0, origin.length) != origin) {
-			running = true;
-			document.getElementById(element).innerHTML =
-				randSliceReplaceNext(part, origin, k);
-			setTimeout(backText, speed);
+		if (getDocElemInner().slice(0, getOrigin().length) != getOrigin()) {
+			setRunning(true);
+			document.getElementById(getDocElem()).innerHTML =
+				randSliceReplaceNext(getDocElemInner(), getOrigin());
+			setTimeout(backText, getSpeed());
 		} else {
-			k = 0;
-			backTextDesc();
+			setK(0);
 			rndList = [];
-			part = final;
-			running = false;
+			backTextDesc();
+			setDocElemInner(getFinal());
+			setRunning(false);
 		}
 	}
 }
 
 function backTextDesc() {
-	document.getElementById(element).innerHTML = removeExcedent(
-		final,
-		origin,
-		k
+	document.getElementById(getDocElem()).innerHTML = removeExcedent(
+		getFinal(),
+		getOrigin(),
+		getK()
 	);
-	setTimeout(backTextDesc, speed);
+	setTimeout(backTextDesc, getSpeed());
 }
 </script>
