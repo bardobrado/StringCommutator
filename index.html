@@ -2,8 +2,6 @@
 <p id="demo">Funciona melhor com textos menores.</p>
 <button onclick="nextText();">next</button>
 <script>
-import { onMount } from "svelte";
-
 let origin = "Funciona melhor com textos menores.";
 let final = "Mas ainda assim é um efeito legal";
 let part;
@@ -16,9 +14,8 @@ let running = false;
 
 part = document.getElementById(element).innerHTML;
 
-
-function setK( k) {
-	k = k;
+function setK( ki) {
+	k = ki;
 }
 
 function getK() {
@@ -133,14 +130,13 @@ function removeExcedent(origin, final, kj) {
 	return getDocElemInner();
 }
 
-function randSliceReplaceNext(origin, final, k) {
+function randSliceReplaceNext(origin, final) {
 	setRnd(genRnd(final.length));
 
 	if (rndList.includes(getRnd())) {
 		return randSliceReplaceNext(origin, final);
 	} else {
 		rndList.concat(getRnd());
-		setK(getK()+1);
 	}
 	setDocElemInner(origin.slice(0, getRnd()));
 	setDocElemInner(getDocElemInner()+final.charAt(getRnd()) + origin.slice(getRnd() + 1));
@@ -150,10 +146,10 @@ function randSliceReplaceNext(origin, final, k) {
 
 function backText() {
 	if (getOrigin().length >= getFinal().length) {
-		if ( getK() < getOrigin().length && getDocElemInner() != getOrigin()) {
+		if ( getDocElemInner() != getOrigin()) {
 			setRunning(true);
 			document.getElementById(getDocElement()).innerHTML =
-				randSliceReplaceNext(getDocElemInner(), getOrigin(), getK());
+				randSliceReplaceNext(getDocElemInner(), getOrigin());
 			
 			setTimeout(backText, getSpeed());
 		} else {
