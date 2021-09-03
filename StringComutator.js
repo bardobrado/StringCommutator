@@ -1,192 +1,221 @@
+/*
+ ============================================================================
+ Name        : StringComutator.js
+ Author      : Lord Harkon
+ Version     : 0.1
+ Copyright   : Your copyright notice
+ Description : String comutator, transform one string into another
+ ============================================================================
+ */
 
-let origin;
-let final;
-let part;
-let k;
-let rnd;
-let rndList;
-let speed;
-let element;
-let running;
+var StringComutator = class StringComutator {
+    constructor(_origin, _final, _part, _k, _random, _rndList, _speed, _element, _running) {
+        this.origin = _origin;
+        this.final = _final;
+        this.part = _part;
+        this.k = _k;
+        this.rnd = _random;
+        this.rndList = _rndList;
+        this.speed = _speed;
+        this.element = _element;
+        this.running = _running;
+    };
 
-function resetRndList(){
-	rndList = [];
+    resetRndList() {
+        this.rndList = [];
+    }
+
+    appendRndList(elm) {
+        this.rndList.concat(elm);
+    }
+
+    getRndList() {
+        return this.rndList;
+    }
+
+    setK(ki) {
+        this.k = ki;
+    }
+
+    getK() {
+        return this.k;
+    }
+
+    isRunning() {
+        return this.running;
+    }
+    setRunning(bol) {
+        this.running = bol;
+    }
+
+    genRnd(mod) {
+        return Math.random() * mod;
+    }
+
+    getRnd() {
+        return this.rnd;
+    }
+
+    setRnd(rd) {
+        this.rnd = rd;
+    }
+
+    getSpeed() {
+        return this.speed;
+    }
+    setSpeed(spd) {
+        this.speed = spd;
+    }
+
+    getFinal() {
+        return this.final;
+    }
+
+    setFinal(fin) {
+        this.final = fin;
+    }
+
+    getOrigin() {
+        return this.origin;
+    }
+
+    setOrigin(ori) {
+        this.origin = ori;
+    }
+
+    getDocElement() {
+        return this.element;
+    }
+
+    setDocElement(elem) {
+        this.element = elem;
+    }
+
+    getDocElemInner() {
+        return this.part;
+    }
+
+    setDocElemInner(docElem) {
+        this.part = docElem;
+    }
+
+    nextText() {
+        if (this.getFinal().length >= this.getOrigin().length) {
+            if (this.getDocElemInner() != this.getFinal()) {
+                this.setRunning(true);
+                document.getElementById(this.getDocElement()).innerHTML =
+                    this.randSliceReplaceNext(this.getDocElemInner(), this.getFinal());
+
+                setTimeout(() =>this.nextText(), this.getSpeed());
+            } else {
+                this.resetRndList();
+                this.setK(0);
+                this.setDocElemInner(this.getFinal());
+                this.setRunning(false);
+            }
+        } else {
+            if (this.getDocElemInner().slice(0, this.getFinal().length) != this.getFinal()) {
+                this.setRunning(true);
+                document.getElementById(this.getDocElement()).innerHTML =
+                    this.randSliceReplaceNext(this.getDocElemInner(), this.getFinal());
+                setTimeout(()=>this.nextText(), this.getSpeed());
+            } else {
+                this.resetRndList();
+                this.setK(0);
+                this.nextTextDesc();
+                this.setDocElemInner(this.getFinal());
+                this.setRunning(false);
+
+            }
+        }
+    }
+
+    nextTextDesc() {
+        document.getElementById(this.getDocElement()).innerHTML = this.removeExcedent(
+            this.getOrigin(),
+            this.getFinal(),
+            this.getK()
+        );
+        if (this.getDocElemInner() != this.getFinal()) {
+            setTimeout(()=>this.nextTextDesc(), this.getSpeed());
+        }
+    }
+
+    backText() {
+        if (this.getOrigin().length >= this.getFinal().length) {
+            if (this.getDocElemInner() != this.getOrigin()) {
+                this.setRunning(true);
+                document.getElementById(this.getDocElement()).innerHTML =
+                    this.randSliceReplaceNext(this.getDocElemInner(), this.getOrigin());
+
+                setTimeout(() =>this.backText(), this.getSpeed());
+            } else {
+                this.resetRndList();
+                this.setK(0);
+                this.setDocElemInner(this.getOrigin());
+                this.setRunning(false);
+            }
+        } else {
+            if (this.getDocElemInner().slice(0, this.getOrigin().length) != this.getOrigin()) {
+                this.setRunning(true);
+                document.getElementById(this.getDocElement()).innerHTML =
+                    this.randSliceReplaceNext(this.getDocElemInner(), this.getOrigin());
+                setTimeout(()=>this.backText(), this.getSpeed());
+            } else {
+                this.setK(0);
+                this.resetRndList();
+                this.backTextDesc();
+                this.setDocElemInner(this.getOrigin());
+                this.setRunning(false);
+            }
+        }
+    }
+
+    backTextDesc() {
+        document.getElementById(getDocElement()).innerHTML = this.removeExcedent(
+            this.getFinal(),
+            this.getOrigin(),
+            this.getK()
+        );
+        if (this.getDocElemInner() != this.getOrigin()) {
+            setTimeout(()=>this.backTextDesc(), this.getSpeed());
+        }
+    }
+
+    removeExcedent(origin, final, kj) {
+        if (this.getK() < origin.length - final.length) {
+            this.setDocElemInner(
+                this.getDocElemInner().slice(0, final.length) +
+                this.getDocElemInner().slice(
+                    final.length,
+                    origin.length - this.getK()
+                )
+            );
+            kj++;
+            this.setK(kj);
+        }
+        return this.getDocElemInner();
+    }
+
+    randSliceReplaceNext(origin, final) {
+        this.setRnd(this.genRnd(final.length));
+
+        if (this.getRndList().includes(this.getRnd())) {
+            //return randSliceReplaceNext(origin, final);
+        } else {
+            this.appendRndList(this.getRnd());
+
+            this.setDocElemInner(origin.slice(0, this.getRnd()));
+            this.setDocElemInner(
+                this.getDocElemInner() +
+                final.charAt(this.getRnd()) +
+                origin.slice(this.getRnd() + 1)
+            );
+
+            return this.getDocElemInner();
+        }
+
+    }
+
 }
-
-
-function appendRndList( elm) {
-	rndList.concat(elm);
-}
-
-function getRndList() {
-	return rndList;
-}
-
-function setK( ki) {
-	k = ki;
-}
-
-function getK() {
-	return k;
-}
-
-function isRunning() {
-    return running;
-}
-function setRunning( bol)
-{
-    running = bol;
-}
-
-function genRnd( mod ) {
-    return Math.random() * mod;
-}
-
-function getRnd() {
-    return rnd;
-}
-
-function setRnd( rd ) {
-    rnd = rd;
-} 
-
-function getSpeed() {
-    return speed;
-}
-function setSpeed(spd) {
-    speed = spd;
-}
-
-function getFinal() {
-    return final;
-}
-
-function setFinal (fin) {
-    final = fin;
-}
-
-function getOrigin() {
-    return origin;
-}
-
-function setOrigin(ori) {
-    origin = ori;
-}
-
-function getDocElement() {
-    return element;
-}
-
-function setDocElement(elem) {
-    element = elem;
-}
-
-function getDocElemInner(){
-    return part;
-}
-
-function setDocElemInner(docElem) {
-    part = docElem
-}
-
-function nextText() {
-	if (getFinal().length >= getOrigin().length) {
-		if (getDocElemInner() != GetFinal()) {
-			setRunning(true);
-			document.getElementById(getDocElem()).innerHTML =
-				randSliceReplaceNext(getDocElemInner(), getFinal());
-
-			setTimeout(nextText, getSpeed());
-		} else {
-			resetRndList();
-			setK(0);
-			setDocElemInner(getFinal());
-			setRunning(false);
-		}
-	} else {
-		if (getDocElemInner().slice(0, getFinal().length) != getFinal()) {
-			setRunning(true);
-			document.getElementById(getDocElement()).innerHTML =
-				randSliceReplaceNext(getDocElemInner(), getFinal());
-			setTimeout(nextText, getSpeed());
-		} else {
-			resetRndList();
-			setK(0);
-			nextTextDesc();
-			setDocElemInner(getFinal());
-			setRunning(false);
-		}
-	}
-}
-
-function nextTextDesc() {
-	document.getElementById(getDocElement()).innerHTML = removeExcedent(
-		getOrigin(),
-		getFinal(),
-		getK()	
-	);
-	setTimeout(nextTextDesc, getSpeed());
-}
-
-function removeExcedent(origin, final, kj) {
-	if (getK() < origin.length - final.length) {
-		setDocElemInner(getDocElemInner().slice(0, final.length) + getDocElemInner().slice(final.length, origin.length - getK()));
-		kj++;
-		setK(kj);
-
-	}
-	return getDocElemInner();
-}
-
-function randSliceReplaceNext(origin, final) {
-	setRnd(genRnd(final.length));
-
-	if (getRndList().includes(getRnd())) {
-		return randSliceReplaceNext(origin, final);
-	} else {
-		appendRndList(getRnd());
-	}
-	setDocElemInner(origin.slice(0, getRnd()));
-	setDocElemInner(getDocElemInner()+final.charAt(getRnd()) + origin.slice(getRnd() + 1));
-	
-	return getDocElemInner();
-}
-
-function backText() {
-	if (getOrigin().length >= getFinal().length) {
-		if ( getDocElemInner() != getOrigin()) {
-			setRunning(true);
-			document.getElementById(getDocElement()).innerHTML =
-				randSliceReplaceNext(getDocElemInner(), getOrigin());
-			
-			setTimeout(backText, getSpeed());
-		} else {
-			resetRndList();
-			setK(0);
-			setDocElemInner(getOrigin());
-			setRunning(false);
-		}
-	} else {
-		if (getDocElemInner().slice(0, getOrigin().length) != getOrigin()) {
-			setRunning(true);
-			document.getElementById(getDocElem()).innerHTML =
-				randSliceReplaceNext(getDocElemInner(), getOrigin());
-			setTimeout(backText, getSpeed());
-		} else {
-			setK(0);
-			resetRndList();
-			backTextDesc();
-			setDocElemInner(getFinal());
-			setRunning(false);
-		}
-	}
-}
-
-function backTextDesc() {
-	document.getElementById(getDocElem()).innerHTML = removeExcedent(
-		getFinal(),
-		getOrigin(),
-		getK()
-	);
-	setTimeout(backTextDesc, getSpeed());
-}
+export default StringComutator;
