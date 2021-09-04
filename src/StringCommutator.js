@@ -8,7 +8,7 @@
  ============================================================================
  */
 
-var StringComutator = class StringComutator {
+var StringCommutator = class StringCommutator {
     constructor(_origin, _final, _part, _k, _random, _rndList, _speed, _element, _running) {
         this.origin = _origin;
         this.final = _final;
@@ -218,4 +218,4 @@ var StringComutator = class StringComutator {
     }
 
 }
-export default StringComutator;
+export default StringCommutator;
