@@ -1,0 +1,24 @@
+{
+  "name": "string-commutator",
+  "version": "1.0.0",
+  "description": "A string commuter",
+  "main": "src/StringCommutator.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bardobrado/StringComutator.git"
+  },
+  "keywords": [
+    "string",
+    "commute",
+    "transform"
+  ],
+  "author": "lordharkon <felipemuniz82@hotmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bardobrado/StringComutator/issues"
+  },
+  "homepage": "https://github.com/bardobrado/StringComutator#readme"
+}
