@@ -2,7 +2,7 @@
  ============================================================================
  Name        : StringComutator.js
  Author      : Lord Harkon
- Version     : 0.1
+ Version     : 1.0.0
  Copyright   : Your copyright notice
  Description : String comutator, transform one string into another
  ============================================================================
@@ -12,7 +12,7 @@ const linguagens = require('./linguagens-de-programacao.json')
 module.exports = { 
     all: linguagens
     }
-    
+
 var StringCommutator = class StringCommutator {
     constructor(_origin, _final, _part, _k, _random, _rndList, _speed, _element, _running) {
         this.origin = _origin;
