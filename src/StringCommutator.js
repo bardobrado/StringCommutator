@@ -7,12 +7,6 @@
  Description : String comutator, transform one string into another
  ============================================================================
  */
-
-const linguagens = require('./linguagens-de-programacao.json')
-module.exports = { 
-    all: linguagens
-    }
-
 var StringCommutator = class StringCommutator {
     constructor(_origin, _final, _part, _k, _random, _rndList, _speed, _element, _running) {
         this.origin = _origin;
